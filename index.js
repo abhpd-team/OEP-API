@@ -1,25 +1,29 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 require("dotenv/config");
 
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose.connect(process.env.DB_EXAMINERS_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
 const app = express();
+app.use(bodyParser.json());
 
 //Importing routes
 const exams = require("./routes/exams");
 const classes = require("./routes/classes");
 const examlive = require("./routes/examlive");
 const postanswers = require("./routes/postanswers");
+const accounts = require("./routes/login");
 
 //Using routes in middleware
 app.use("/exams", exams);
 app.use("/classes", classes);
 app.use("/examlive", examlive);
 app.use("/postanswers", postanswers);
+app.use("/login", accounts);
 
 //Default route
 app.get("/", (req, res) => {
