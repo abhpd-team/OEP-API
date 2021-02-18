@@ -43,7 +43,7 @@ const ExaminerSchema = new Schema({
     ],
     classes: [
         {
-            classId: String,
+            className: String,
             candidates: [
                 {
                     candidateId: String,

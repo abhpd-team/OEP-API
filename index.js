@@ -6,6 +6,7 @@ require("dotenv/config");
 mongoose.connect(process.env.DB_EXAMINERS_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
 });
 
 const app = express();
@@ -18,7 +19,7 @@ const examlive = require("./routes/examlive");
 const postanswers = require("./routes/postanswers");
 const accounts = require("./routes/login");
 
-//Using routes in middleware
+//Using routes as middleware
 app.use("/exams", exams);
 app.use("/classes", classes);
 app.use("/examlive", examlive);

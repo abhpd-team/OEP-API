@@ -10,22 +10,18 @@ const Examiner = require("./../schema/examiner");
 //     password: String, | Should be the unhashed password.
 // }
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     // res.send("/login");
-
-    Examiner.findOne(req.body)
-        .then((data) => {
-            if (data === null) {
-                res.json({
-                    message: "user dosent exists",
-                });
-            } else {
-                res.json(data);
-            }
-        })
-        .catch((err) => {
-            res.json({ message: err });
-        });
+    try {
+        const foundElement = await Examiner.findOne(req.body);
+        if (foundElement === null) {
+            res.json({ message: "no user exist" });
+        } else {
+            res.json(foundElement);
+        }
+    } catch (err) {
+        res.json({ message: "err" });
+    }
 });
 
 // request format to signup:
@@ -34,32 +30,25 @@ router.post("/", (req, res) => {
 //     password: String,
 // }
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
     // res.send("/login/signup");
 
-    Examiner.findOne({ username: req.body.username }) //Looking if a username already exists
-        .then((data) => {
-            if (data === null) {
-                var newExaminer = new Examiner({
-                    username: req.body.username,
-                    password: req.body.password,
-                });
-
-                newExaminer
-                    .save()
-                    .then((data) => {
-                        res.json(data);
-                    })
-                    .catch((err) => {
-                        res.json({ message: err });
-                    });
-            } else {
-                res.json({ message: "user already exists" });
+    try {
+        const foundElement = await Examiner.findOne(req.body);
+        if (foundElement === null) {
+            const newExaminer = new Examiner(req.body);
+            try {
+                const savedExaminer = await newExaminer.save();
+                res.json(savedExaminer);
+            } catch (err) {
+                res.json({ message: err });
             }
-        })
-        .catch((err) => {
-            res.json({ message: err });
-        });
+        } else {
+            res.json({ message: "username is in use, user already exist" });
+        }
+    } catch (err) {
+        res.json({ message: err });
+    }
 });
 
 module.exports = router;
