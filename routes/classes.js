@@ -73,8 +73,21 @@ router.get("/", async (req, res) => {
 // req = {
 //     username: String,
 //     password: String, | Should be the unhashed password.
-//      classId: Object ID (_Id)
-//      className: String,
+//      classId: String,
+//      updatedClass: {
+//          className: String,
+//          candidates: [
+//              {
+//                  _id: String,
+//                  candidateId: String,
+//                  candidateName: String
+//              },
+//              {
+//                  candidateId: String,
+//                  candidateName: String
+//              },
+//          ]
+//      }
 // }
 
 router.patch("/", async (req, res) => {
@@ -84,10 +97,10 @@ router.patch("/", async (req, res) => {
             {
                 username: req.body.username,
                 password: req.body.password,
-                "classes._id": req.body.classId,
+                "classes._id": req.body.updatedClass._id,
             },
             {
-                $set: { "classes.$.className": req.body.className },
+                $set: { "classes.$": req.body.updatedClass },
             }
         );
 
