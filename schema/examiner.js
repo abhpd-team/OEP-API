@@ -7,18 +7,16 @@ const ExaminerSchema = new Schema({
     password: String,
     exams: [
         {
-            examId: String,
+            examName: String,
             startDateTime: Date,
             endDateTime: Date,
             totalMarks: Number,
             questions: [
                 {
-                    questionId: String,
                     marks: Number,
                     value: String,
                     options: [
                         {
-                            optionId: String,
                             value: String,
                         },
                     ],
