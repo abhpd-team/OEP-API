@@ -12,22 +12,12 @@ const Examiner = require("./../schema/examiner");
 // req = {
 //     username: String,
 //     password: String,
-//     classId: String,
 //     newExam: {
 //         examName: String,
 //         startDateTime: Date,
 //         endDateTime: Date,
-//         questions: [
-//             {
-//                 marks: Number,
-//                 value: String,
-//                 options: [
-//                     {
-//                         value: String,
-//                     },
-//                 ],
-//             },
-//         ],
+//         questionBankId: String,
+//         classId: String,
 //     }
 // }
 
@@ -37,18 +27,24 @@ router.post("/", async (req, res) => {
         var foundElement = await Examiner.findOne({
             username: req.body.username,
             password: req.body.password,
-            "classes._id": req.body.classId,
+            "classes._id": req.body.newExam.classId,
         });
 
         const classIndx = foundElement.classes.findIndex((e) => {
-            return e._id.toString() === req.body.classId;
+            return e._id.toString() === req.body.newExam.classId;
         });
 
         var compiledTotalMarks = 0;
 
-        req.body.newExam.questions.forEach((element) => {
-            compiledTotalMarks += element.marks;
+        const questionBankIndx = foundElement.questionBanks.findIndex((e) => {
+            return e._id.toString() === req.body.newExam.questionBankId;
         });
+
+        foundElement.questionBanks[questionBankIndx].questions.forEach(
+            (element) => {
+                compiledTotalMarks += element.marks;
+            }
+        );
 
         var compiledCandidates = [];
 
@@ -72,7 +68,7 @@ router.post("/", async (req, res) => {
             startDateTime: req.body.newExam.startDateTime,
             endDateTime: req.body.newExam.endDateTime,
             totalMarks: compiledTotalMarks,
-            questions: req.body.newExam.questions,
+            questionBankId: req.body.newExam.questionBankId,
             candidates: compiledCandidates,
         };
 
@@ -124,56 +120,29 @@ router.get("/", async (req, res) => {
 });
 
 // --------- UPDATE ----------
+// FOR NOW THERE IS NO UPDATE EXAM FUNCTIONALITY DUE TO TECHNICAL LIMITATION OF
+// PRESERVING IDS
+// THIS FEATURE MIGHT BE ADDED IN THE COMING UPDATES
 
-// request format to update a class details:
-// req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
-//      classId: String,
-//      updatedClass: {
-//          className: String,
-//          candidates: [
-//              {
-//                  _id: String,
-//                  candidateId: String,
-//                  candidateName: String
-//              },
-//              {
-//                  candidateId: String,
-//                  candidateName: String
-//              },
-//          ]
-//      }
-// }
+// router.patch("/", async (req, res) => {
+//     // res.send("/classes");
+//     try {
+//         const foundElement = await Examiner.findOne({
+//             username: req.body.username,
+//             password: req.body.password,
+//         });
 
-router.patch("/", async (req, res) => {
-    // res.send("/classes");
-    try {
-        await Examiner.findOneAndUpdate(
-            {
-                username: req.body.username,
-                password: req.body.password,
-                "classes._id": req.body.updatedClass._id,
-            },
-            {
-                $set: { "classes.$": req.body.updatedClass },
-            }
-        );
-
-        const foundElement = await Examiner.findOne({
-            username: req.body.username,
-            password: req.body.password,
-        });
-
-        if (foundElement === null) {
-            res.json({ message: "no user exist" });
-        } else {
-            res.json(foundElement);
-        }
-    } catch (err) {
-        res.json({ message: "err" });
-    }
-});
+//         if (foundElement === null) {
+//             res.json({ message: "no user exist" });
+//         } else {
+//             res.json({
+//                 message: "you can't edit an exam delete and create a new one",
+//             });
+//         }
+//     } catch (err) {
+//         res.json({ message: "err" });
+//     }
+// });
 
 // --------- DELETE ----------
 

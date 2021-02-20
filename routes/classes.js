@@ -73,8 +73,8 @@ router.get("/", async (req, res) => {
 // req = {
 //     username: String,
 //     password: String, | Should be the unhashed password.
-//      classId: String,
 //      updatedClass: {
+//          _id: String
 //          className: String,
 //          candidates: [
 //              {

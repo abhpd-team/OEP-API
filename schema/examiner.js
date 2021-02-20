@@ -11,17 +11,7 @@ const ExaminerSchema = new Schema({
             startDateTime: Date,
             endDateTime: Date,
             totalMarks: Number,
-            questions: [
-                {
-                    marks: Number,
-                    value: String,
-                    options: [
-                        {
-                            value: String,
-                        },
-                    ],
-                },
-            ],
+            questionBankId: String,
             candidates: [
                 {
                     candidateId: String,
@@ -46,6 +36,23 @@ const ExaminerSchema = new Schema({
                 {
                     candidateId: String,
                     candidateName: String,
+                },
+            ],
+        },
+    ],
+    questionBanks: [
+        {
+            questionBankName: String,
+            questions: [
+                {
+                    marks: Number,
+                    value: String,
+                    options: [
+                        {
+                            value: String,
+                        },
+                    ],
+                    correctOptionValue: String,
                 },
             ],
         },
