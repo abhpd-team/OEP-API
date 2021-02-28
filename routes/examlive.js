@@ -13,24 +13,7 @@ const Examiner = require("./../schema/examiner");
 // }
 
 router.get("/", async (req, res) => {
-    // res.send("/examlive");
-    Examiner.findOne({
-        _id: req.body.examinerId,
-        exams: [{ examId: req.body.examId }],
-    })
-        .then((data) => {
-            if (data === null) {
-                res.json({
-                    message:
-                        "either this test dosent exits or something went wrong",
-                });
-            } else {
-                res.json(data);
-            }
-        })
-        .catch((err) => {
-            res.json({ message: "wrong request" });
-        });
+    res.json({ message: "/examlive" });
 });
 
 module.exports = router;

@@ -17,7 +17,7 @@ const Examiner = require("../schema/examiner");
 //      }
 // }
 
-router.post("/", async (req, res) => {
+router.post("/new", async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 //     password: String, | Should be the unhashed password.
 // }
 
-router.get("/", async (req, res) => {
+router.post("/get", async (req, res) => {
     // res.send("/questionbanks");
     try {
         const foundElement = await Examiner.findOne(req.body);
@@ -91,7 +91,7 @@ router.get("/", async (req, res) => {
 //      },
 // }
 
-router.patch("/", async (req, res) => {
+router.post("/upd", async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(
@@ -129,7 +129,7 @@ router.patch("/", async (req, res) => {
 //      questionBankId: Object ID (_Id)
 // }
 
-router.delete("/", async (req, res) => {
+router.post("/del", async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(

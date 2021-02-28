@@ -17,7 +17,7 @@ const Examiner = require("./../schema/examiner");
 //      }
 // }
 
-router.post("/", async (req, res) => {
+router.post("/new", async (req, res) => {
     // res.send("/classes");
     try {
         await Examiner.findOneAndUpdate(
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 //     password: String, | Should be the unhashed password.
 // }
 
-router.get("/", async (req, res) => {
+router.post("/get", async (req, res) => {
     // res.send("/classes");
     try {
         const foundElement = await Examiner.findOne(req.body);
@@ -80,17 +80,19 @@ router.get("/", async (req, res) => {
 //              {
 //                  _id: String,
 //                  candidateId: String,
-//                  candidateName: String
+//                  candidateName: String,
+//                  candidateEmail: String
 //              },
 //              {
 //                  candidateId: String,
-//                  candidateName: String
+//                  candidateName: String,
+//                  candidateExam: String
 //              },
 //          ]
 //      }
 // }
 
-router.patch("/", async (req, res) => {
+router.post("/upd", async (req, res) => {
     // res.send("/classes");
     try {
         await Examiner.findOneAndUpdate(
@@ -128,7 +130,7 @@ router.patch("/", async (req, res) => {
 //      classId: Object ID (_Id)
 // }
 
-router.delete("/", async (req, res) => {
+router.post("/del", async (req, res) => {
     // res.send("/classes");
     try {
         await Examiner.findOneAndUpdate(
@@ -158,87 +160,87 @@ router.delete("/", async (req, res) => {
     }
 });
 
-// ========= CRUD for candidates ============
+// // ========= CRUD for candidates ============
 
-// --------- CREATE ----------
+// // --------- CREATE ----------
 
-// request format to get the list of candidates of a class:
-// req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
-//      classId: Object Id
-//      candidate: {
-//          candidateId: String,
-//          candidateName: String
-//      }
-// }
+// // request format to get the list of candidates of a class:
+// // req = {
+// //     username: String,
+// //     password: String, | Should be the unhashed password.
+// //      classId: Object Id
+// //      candidate: {
+// //          candidateId: String,
+// //          candidateName: String
+// //      }
+// // }
 
-router.post("/candidates", async (req, res) => {
-    // res.send("/classes/candidates");
-    try {
-        await Examiner.findOneAndUpdate(
-            {
-                username: req.body.username,
-                password: req.body.password,
-                "classes._id": req.body.classId,
-            },
-            {
-                $addToSet: { candidates: req.body.candidate },
-            }
-        );
+// router.post("/candidates", async (req, res) => {
+//     // res.send("/classes/candidates");
+//     try {
+//         await Examiner.findOneAndUpdate(
+//             {
+//                 username: req.body.username,
+//                 password: req.body.password,
+//                 "classes._id": req.body.classId,
+//             },
+//             {
+//                 $addToSet: { candidates: req.body.candidate },
+//             }
+//         );
 
-        const classFound = await Examiner.findOne(
-            {
-                username: req.body.username,
-                password: req.body.password,
-                "classes._id": req.body.classId,
-            },
-            {
-                "classes.$": true,
-            }
-        );
+//         const classFound = await Examiner.findOne(
+//             {
+//                 username: req.body.username,
+//                 password: req.body.password,
+//                 "classes._id": req.body.classId,
+//             },
+//             {
+//                 "classes.$": true,
+//             }
+//         );
 
-        if (classFound === null) {
-            res.json({ message: "no user exist" });
-        } else {
-            res.json(classFound.classes[0].candidates); //returns Array
-        }
-    } catch (err) {
-        res.json({ message: "err" });
-    }
-});
+//         if (classFound === null) {
+//             res.json({ message: "no user exist" });
+//         } else {
+//             res.json(classFound.classes[0].candidates); //returns Array
+//         }
+//     } catch (err) {
+//         res.json({ message: "err" });
+//     }
+// });
 
-// --------- READ ----------
+// // --------- READ ----------
 
-// request format to get the list of candidates of a class:
-// req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
-//      classId: Object Id
-// }
+// // request format to get the list of candidates of a class:
+// // req = {
+// //     username: String,
+// //     password: String, | Should be the unhashed password.
+// //      classId: Object Id
+// // }
 
-router.get("/candidates", async (req, res) => {
-    // res.send("/classes/candidates");
-    try {
-        const classFound = await Examiner.findOne(
-            {
-                username: req.body.username,
-                password: req.body.password,
-                "classes._id": req.body.classId,
-            },
-            {
-                "classes.$": true,
-            }
-        );
+// router.get("/candidates", async (req, res) => {
+//     // res.send("/classes/candidates");
+//     try {
+//         const classFound = await Examiner.findOne(
+//             {
+//                 username: req.body.username,
+//                 password: req.body.password,
+//                 "classes._id": req.body.classId,
+//             },
+//             {
+//                 "classes.$": true,
+//             }
+//         );
 
-        if (classFound === null) {
-            res.json({ message: "no user exist" });
-        } else {
-            res.json(classFound.classes[0].candidates); //returns Array
-        }
-    } catch (err) {
-        res.json({ message: "err" });
-    }
-});
+//         if (classFound === null) {
+//             res.json({ message: "no user exist" });
+//         } else {
+//             res.json(classFound.classes[0].candidates); //returns Array
+//         }
+//     } catch (err) {
+//         res.json({ message: "err" });
+//     }
+// });
 
 module.exports = router;

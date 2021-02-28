@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+
+const cors = require("cors");
+
 require("dotenv/config");
 
 try {
@@ -17,6 +20,7 @@ try {
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 //Importing routes
 const exams = require("./routes/exams");
@@ -40,6 +44,6 @@ app.get("/", (req, res) => {
 });
 
 //Port setup
-app.listen(3000, () => {
-    console.log("server is running on port 3000");
+app.listen(process.env.PORT || 5000, () => {
+    console.log("server is running on port 5000");
 });

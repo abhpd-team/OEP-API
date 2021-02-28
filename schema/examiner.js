@@ -36,6 +36,7 @@ const ExaminerSchema = new Schema({
                 {
                     candidateId: String,
                     candidateName: String,
+                    candidateEmail: String,
                 },
             ],
         },
