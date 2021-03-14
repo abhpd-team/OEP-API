@@ -12,10 +12,9 @@ try {
         useUnifiedTopology: true,
         useFindAndModify: false,
     });
+    console.log("connected to DB");
 } catch (err) {
     console.log(err);
-} finally {
-    console.log("connected to DB");
 }
 
 const app = express();

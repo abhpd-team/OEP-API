@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const ExaminerSchema = new Schema({
     username: String,
     password: String,
+    email: String,
     exams: [
         {
             examName: String,
