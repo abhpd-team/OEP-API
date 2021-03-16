@@ -4,26 +4,25 @@ const router = express.Router();
 
 const Examiner = require("../schema/examiner");
 
+const authenticateJWToken = require("./auth/auth");
+
 // ========= CRUD for classes ============
 
 // --------- CREATE ----------
 
 // request format to add a questionBank in the list of all questionBanks:
 // req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
 //      questionBank: {
 //          questionBankName: String,
 //      }
 // }
 
-router.post("/new", async (req, res) => {
+router.post("/new", authenticateJWToken, async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(
             {
-                username: req.body.username,
-                password: req.body.password,
+                username: req.payload.username,
             },
             {
                 $addToSet: { questionBanks: req.body.questionBank },
@@ -31,8 +30,7 @@ router.post("/new", async (req, res) => {
         );
 
         const foundElement = await Examiner.findOne({
-            username: req.body.username,
-            password: req.body.password,
+            username: req.payload.username,
         });
 
         if (foundElement === null) {
@@ -48,15 +46,14 @@ router.post("/new", async (req, res) => {
 // --------- READ ----------
 
 // request format to get list of all questionBanks:
-// req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
-// }
+// only a valid jwt
 
-router.post("/get", async (req, res) => {
+router.post("/get", authenticateJWToken, async (req, res) => {
     // res.send("/questionbanks");
     try {
-        const foundElement = await Examiner.findOne(req.body);
+        const foundElement = await Examiner.findOne({
+            username: req.payload.username,
+        });
         if (foundElement === null) {
             res.json({ message: "no user exist" });
         } else {
@@ -71,8 +68,6 @@ router.post("/get", async (req, res) => {
 
 // request format to update a class details:
 // req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
 //     updatedQuestionBank: {
 //          _id: String,
 //          questionBankName: String,
@@ -91,13 +86,12 @@ router.post("/get", async (req, res) => {
 //      },
 // }
 
-router.post("/upd", async (req, res) => {
+router.post("/upd", authenticateJWToken, async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(
             {
-                username: req.body.username,
-                password: req.body.password,
+                username: req.payload.username,
                 "questionBanks._id": req.body.updatedQuestionBank._id,
             },
             {
@@ -106,8 +100,7 @@ router.post("/upd", async (req, res) => {
         );
 
         foundElement = await Examiner.findOne({
-            username: req.body.username,
-            password: req.body.password,
+            username: req.payload.username,
         });
 
         if (foundElement === null) {
@@ -124,18 +117,15 @@ router.post("/upd", async (req, res) => {
 
 // request format to delete a class:
 // req = {
-//     username: String,
-//     password: String, | Should be the unhashed password.
 //      questionBankId: Object ID (_Id)
 // }
 
-router.post("/del", async (req, res) => {
+router.post("/del", authenticateJWToken, async (req, res) => {
     // res.send("/questionbanks");
     try {
         await Examiner.findOneAndUpdate(
             {
-                username: req.body.username,
-                password: req.body.password,
+                username: req.payload.username,
             },
             {
                 $pull: {
@@ -145,8 +135,7 @@ router.post("/del", async (req, res) => {
         );
 
         const foundElement = await Examiner.findOne({
-            username: req.body.username,
-            password: req.body.password,
+            username: req.payload.username,
         });
 
         if (foundElement === null) {
