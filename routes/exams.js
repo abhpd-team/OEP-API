@@ -102,6 +102,24 @@ router.post("/new", authenticateJWToken, async (req, res) => {
 // request format to get list of all exams:
 // only a valid jwt
 
+//for exams since we need all the user details to create an exam therefore this endpoint
+router.post("/getall", authenticateJWToken, async (req, res) => {
+    // res.send("/classes");
+    try {
+        const foundElement = await Examiner.findOne({
+            username: req.payload.username,
+        });
+        if (foundElement === null) {
+            res.json({ message: "no user exist" });
+        } else {
+            res.json(foundElement);
+        }
+    } catch (err) {
+        res.json({ message: "err" });
+    }
+});
+
+//For only the list of exams
 router.post("/get", authenticateJWToken, async (req, res) => {
     // res.send("/classes");
     try {
