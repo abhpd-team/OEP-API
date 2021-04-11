@@ -8,7 +8,7 @@ const router = express.Router();
 const Examiner = require("./../schema/examiner");
 
 // to bypass timing restrictions
-const devOption = true;
+const devOption = false;
 
 // request format to get the list of questions and options:
 // req = {
