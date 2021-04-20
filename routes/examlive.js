@@ -95,9 +95,13 @@ router.post("/getexam", async (req, res) => {
                             res.json({
                                 message: `Exam Haven't started yet, try again between ${moment(
                                     foundExam.startDateTime
-                                ).format("MMMM Do YYYY, h:mm:ss a")} & ${moment(
-                                    foundExam.endDateTime
-                                ).format("MMMM Do YYYY, h:mm:ss a")}`,
+                                )
+                                    .utc()
+                                    .format(
+                                        "MMMM Do YYYY, h:mm:ss a"
+                                    )} & ${moment(foundExam.endDateTime)
+                                    .utc()
+                                    .format("MMMM Do YYYY, h:mm:ss a")}`,
                             });
                             return;
                         }
