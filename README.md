@@ -12,7 +12,7 @@ Online Exam Portal is 🔖 a easy-to-use Platform for MCQ-based tests/exams. Hel
 
 🦠 Due to the recent COVID-19 pandemic, students and teachers have to study and teach through online medium, we believe that this project will be helpful for many teachers and students. Even if it helps only a few teacher and students that will be a win for us and a great way to help the world in pandemic through our code.
 
-This is a [react](https://reactjs.org/) based frontend created with [create-react-app](https://github.com/facebook/create-react-app). Special ❤️ Thanks to all the contributors on all the dependencies for making this project possible.
+Special ❤️ Thanks to all the contributors on all the dependencies for making this project possible.
 
 ## Installation
 
